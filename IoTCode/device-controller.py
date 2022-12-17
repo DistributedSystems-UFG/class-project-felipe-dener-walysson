@@ -15,19 +15,6 @@ producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
 last_reported = 0
 
 
-def read_led():
-    global green_led
-    global red_led
-    if green_led:
-        print("Green Led is on")
-    else:
-        print("Green Led is off")
-    if red_led:
-        print("Red Led is on")
-    else:
-        print("Red Led is off")
-
-
 def consume_led_command():
     consumer = KafkaConsumer(bootstrap_servers=KAFKA_SERVER+':'+KAFKA_PORT)
     consumer.subscribe(topics=('ledcommand'))
@@ -38,13 +25,16 @@ def consume_led_command():
         print ('Led to blink: ', msg.key)
         if msg.key == b'red' and msg.value == b'1':
             red_led = True
+            print("Red Led is on")
         if msg.key == b'red' and msg.value == b'0':
             red_led = False
+            print("Red Led is off")
         if msg.key == b'green' and msg.value == b'1':
             green_led = True
+            print("Green Led is on")
         if msg.key == b'green' and msg.value == b'0':
             green_led = False
-        read_led()
+            print("Green Led is off")
 
 trd =threading.Thread(target=consume_led_command)
 trd.start()
