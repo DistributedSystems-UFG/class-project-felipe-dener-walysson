@@ -23,7 +23,7 @@ $ bin/kafka-server-start.sh config/server.properties
 
 - Clone the repo: 
 
-$ git clone https://github.com/professorfabio/SSU-2022_2-StarterProject.git
+$ git clone https://github.com/DistributedSystems-UFG/class-project-felipe-dener
 - Compile the interface (protocol buffer definition):
 
 $ python3 -m grpc_tools.protoc -I../protos --python_out=. --grpc_python_out=. ../protos/iot_service.proto
@@ -36,7 +36,7 @@ $ python3 virtual_device_service.py
 
 - Clone the repo:
 
-$ git clone https://github.com/professorfabio/SSU-2022_2-StarterProject.git
+$ git clone https://github.com/DistributedSystems-UFG/class-project-felipe-dener
 
 - Run device-controler.py (it contains IoT-based Producer and Consumer, which produce events from sensors and consume events for the actuators)
 
