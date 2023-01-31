@@ -27,7 +27,7 @@ class Abstract_device():
     
     def act(self):
         if self.tipo == 'led':
-            self.led_action(1)
+            self.led_action(input("1 to turn on or 0 to turn off: "))
         else:
             pass
     
