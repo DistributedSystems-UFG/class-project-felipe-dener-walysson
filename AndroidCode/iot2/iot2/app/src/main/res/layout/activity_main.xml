@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/Temperatura"
+        android:layout_width="92dp"
+        android:layout_height="26dp"
+        android:text="@string/temperatura"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.172"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.157" />
+
+    <Button
+        android:id="@+id/Interruptor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/interruptor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.128"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Temperatura"
+        app:layout_constraintVertical_bias="0.254" />
+
+    <TextView
+        android:id="@+id/Estado_led"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="estado_led"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toEndOf="@+id/Interruptor"
+        app:layout_constraintTop_toBottomOf="@+id/Temperatura"
+        app:layout_constraintVertical_bias="0.268" />
+
+    <TextView
+        android:id="@+id/Temp_atual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="temp_atual"
+        app:layout_constraintBottom_toTopOf="@+id/Estado_led"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.541"
+        app:layout_constraintStart_toEndOf="@+id/Temperatura"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.418" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
