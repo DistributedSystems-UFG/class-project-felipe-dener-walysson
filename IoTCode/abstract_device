@@ -1,0 +1,34 @@
+import glob
+import time
+from kafka import KafkaProducer, KafkaConsumer
+import math
+import threading
+import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
+from const import *
+
+class Abstract_device():
+    def __init__(self, posicao, tipo):
+        self.posicao = posicao
+        self.tipo = tipo
+    
+    def setup(self):
+        GPIO.setwarnings(False) # Ignore warning for now
+        GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
+        GPIO.setup(self.posicao, GPIO.OUT, initial=GPIO.LOW) # Set pin 16 to be an output pin and set initial value to low (off)
+    
+    def led_action(self, off):
+        ledpin = self.posicao
+        if off:
+            print ('Turning led on')
+            GPIO.output(ledpin,GPIO.HIGH)
+        else:
+            print ('Turning led off')
+            GPIO.output(ledpin,GPIO.LOW)
+    
+    def act(self):
+        if self.tipo == 'led':
+            self.led_action(int(input("1 to turn on or 0 to turn off: ")))
+        else:
+            pass
+    
+    

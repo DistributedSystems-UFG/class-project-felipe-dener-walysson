@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="iot2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/iot2.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
