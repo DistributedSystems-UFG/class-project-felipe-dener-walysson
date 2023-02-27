@@ -3,6 +3,7 @@ package com.example.iot;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,22 +35,10 @@ public class Config extends AppCompatActivity {
                 TextIP = findViewById(R.id.editTextIP);
                 String IP = TextIP.getText().toString();
 
-                /*
-                Estabelece Conexão com o servidor
-                */
-                Boolean Connection = false;
+                ServerConnection SC = new ServerConnection();
+                SC.setIP_Adress(IP);
 
-                if(IP.equals("123")) {
-                    Connection = true;
-                }
-
-                if(Connection){
-                    ErrorMessage.setText("Conexão Realizada com Sucesso");
-                }
-                else{
-                    ErrorMessage.setText("Falha na Conexão com o Servidor");
-                    return;
-                }
+                ErrorMessage.setText("IP Salvo");
 
             }
         });
