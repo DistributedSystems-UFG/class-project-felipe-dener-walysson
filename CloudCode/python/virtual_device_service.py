@@ -76,7 +76,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
 
     def SayLightLevel(self, request, context):
         if self.is_authenticated(request.token):
-            current_light_level = str(random.randint(0, 150))
+            # current_light_level = str(random.randint(0, 150))
 
             create_db.insert_user_device_value(1,2, current_light_level)
             return iot_service_pb2.LightLevelReply(lightLevel=current_light_level)
