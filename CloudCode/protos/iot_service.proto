@@ -20,6 +20,13 @@ service IoTService {
 
   // login
   rpc Login (UserRequest) returns (UserResponse) {}
+
+  // create user
+  rpc CreateUser (UserCreateRequest) returns (UserCreateResponse) {}
+
+  // action
+  rpc Action (ActionRequest) returns (ActionReply) {}
+
 }
 
 // The request message containing the user's name.
@@ -31,6 +38,15 @@ message TemperatureRequest {
 message UserRequest {
   string name = 1;
   string password = 2;
+}
+
+message UserCreateRequest {
+  string name = 1;
+  string password = 2;
+}
+
+message UserCreateResponse {
+  bool status = 1;
 }
 
 message UserResponse{
@@ -60,4 +76,13 @@ message LightLevelRequest {
 
 message LightLevelReply {
   string lightLevel = 1;
+}
+
+message ActionRequest {
+  string action = 1;
+  string token = 3;
+}
+
+message ActionReply {
+  string status = 1;
 }

@@ -11,10 +11,13 @@ if __name__ == '__main__':
     token = response.token
     print("Login status: " + str(response.status))
     print("Token: " + token)
-    # retrieve temperature
-    response = stub.SayTemperature(iot_service_pb2.TemperatureRequest(sensorName='my_sensor', token=token))
-    print("Temperature: " + response.temperature)
-    response = stub.SayLightLevel(iot_service_pb2.LightLevelRequest(sensorName='my_sensor', token=token))
-    print("Light" + response.lightLevel)
-    response = stub.BlinkLed(iot_service_pb2.LedRequest(state=1, ledname='red', token=token))
-    print("Led" + response)
+    # # retrieve temperature
+    # response = stub.SayTemperature(iot_service_pb2.TemperatureRequest(sensorName='my_sensor', token=token))
+    # print("Temperature: " + response.temperature)
+    # response = stub.SayLightLevel(iot_service_pb2.LightLevelRequest(sensorName='my_sensor', token=token))
+    # print("Light" + response.lightLevel)
+    # response = stub.BlinkLed(iot_service_pb2.LedRequest(state=1, ledname='red', token=token))
+    # print("Led" + response)
+    # run action
+    response = stub.Action(iot_service_pb2.ActionRequest(action='go_to_temperature', token=token))
+    print("Action" + response)

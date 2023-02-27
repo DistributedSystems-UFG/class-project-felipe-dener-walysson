@@ -1,3 +1,4 @@
+import random
 from kafka import KafkaConsumer, KafkaProducer
 from const import *
 import threading
@@ -16,6 +17,7 @@ import create_db
 current_temperature = 'void'
 current_light_level = 'void'
 led_state = {'red':0, 'green':0}
+action = {}
 
 # Kafka consumer to run on a separate thread
 def consume_temperature():
@@ -74,22 +76,48 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
 
     def SayLightLevel(self, request, context):
         if self.is_authenticated(request.token):
+            current_light_level = str(random.randint(0, 150))
+
             create_db.insert_user_device_value(1,2, current_light_level)
             return iot_service_pb2.LightLevelReply(lightLevel=current_light_level)
         return iot_service_pb2.LightLevelReply(lightLevel="")
 
     def Login(self, request, context):
-        print ("Login ", request.name)
-        print ("...with password ", request.password)
         if create_db.verify_login(request.name, request.password):
             return iot_service_pb2.UserResponse(status=True, token=generate_token(request.name))
         else:
             return iot_service_pb2.UserResponse(status=False, token="")
     
+    def CreateUser(self, request, context):
+        create_db.create_user(request.name, request.password)
+        return iot_service_pb2.UserResponse(status=True, token=generate_token(request.name))
+    
+    def Action(self, request, context):
+        if self.is_authenticated(request.token):
+            try:
+                action[self.get_name(request.token)]
+            except:
+                action[self.get_name(request.token)] = 'void'
+            if request.action == 'there_is_action?' and action[self.get_name(request.token)] != 'void':
+                response = action[self.get_name(request.token)]
+                action[self.get_name(request.token)] = 'void'
+                return iot_service_pb2.ActionReply(status=response)
+            elif request.action == 'there_is_action?':
+                return iot_service_pb2.ActionReply(status='')
+            else:
+                action[self.get_name(request.token)] = request.action
+                return iot_service_pb2.ActionReply(status='')
+    
     def is_authenticated(self, token):
         try:
             jwt.decode(token, 'scret', algorithms=['HS256'])
             return True
+        except:
+            return False
+    
+    def get_name(self, token):
+        try:
+            return jwt.decode(token, 'scret', algorithms=['HS256'])['name']
         except:
             return False
 

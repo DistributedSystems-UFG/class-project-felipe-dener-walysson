@@ -63,6 +63,15 @@ def verify_login(name, password):
     else:
         return False
 
+def create_user(name, password):
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT COUNT(*) FROM users")
+    count = c.fetchone()[0]
+    c.execute("INSERT INTO users VALUES (?,?,?)", (count + 1, name, password))
+    conn.commit()
+    conn.close()
+
 def run():
     create_column_user()
     if not verify_login('admin', 'admin'):
