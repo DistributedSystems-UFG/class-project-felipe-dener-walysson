@@ -20,12 +20,23 @@ public class CadastrarUsuario extends AppCompatActivity {
         setContentView(R.layout.activity_cadastrar_usuario);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        ServerConnection SC = new ServerConnection();
+
         CadastroButton = findViewById(R.id.CadastroBtn);
 
         CadastroButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+
+                /*
+                Conectando ao Server
+                */
+
+                if(!SC.getIPAdress().equals("123")){
+                    ErrorMessage.setText("Falha na Conexão com o Servidor");
+                    return;
+                }
 
                 TextUsuario = findViewById(R.id.editTextUsuario);
                 String Usuario = TextUsuario.getText().toString();

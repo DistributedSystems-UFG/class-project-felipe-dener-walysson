@@ -24,6 +24,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        ServerConnection SC = new ServerConnection();
+
         LoginButton = findViewById(R.id.LoginBtn);
 
         LoginButton.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +39,16 @@ public class Login extends AppCompatActivity {
                 String Senha = TextSenha.getText().toString();
 
                 ErrorMessage = findViewById(R.id.ErrorMessage);
+
+                /*
+                Conectando ao Server
+                */
+
+                if(!SC.getIPAdress().equals("123")){
+                    ErrorMessage.setText("Falha na Conexão com o Servidor");
+                    return;
+                }
+
 
                 /*
                 Buscando Usuario no banco de dados
