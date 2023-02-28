@@ -8,7 +8,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.concurrent.TimeUnit;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
+import io.grpc.examples.iotservice.IoTServiceGrpc;
+import io.grpc.examples.iotservice.UserRequest;
+import io.grpc.examples.iotservice.UserResponse;
+
 public class Login extends AppCompatActivity {
+
+
+
 
     private Button LoginButton;
     private TextView Cadastro;
@@ -40,29 +52,8 @@ public class Login extends AppCompatActivity {
 
                 ErrorMessage = findViewById(R.id.ErrorMessage);
 
-                /*
-                Conectando ao Server
-                */
-
-                if(!SC.getIPAdress().equals("123")){
-                    ErrorMessage.setText("Falha na Conexão com o Servidor");
-                    return;
-                }
-
-
-                /*
-                Buscando Usuario no banco de dados
-                */
-
-                if (Usuario.equals("abc") && Senha.equals("abc")){
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    startActivity(intent);
-                }
-                else{
-                    ErrorMessage.setText("Usuario ou Senha Incorretos");
-                    return;
-                }
-
+                 String token = SC.login(Usuario, Senha);
+                System.out.println(token);
             }
         });
 
