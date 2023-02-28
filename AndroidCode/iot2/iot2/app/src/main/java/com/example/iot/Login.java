@@ -2,11 +2,14 @@ package com.example.iot;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,8 +21,6 @@ import io.grpc.examples.iotservice.UserRequest;
 import io.grpc.examples.iotservice.UserResponse;
 
 public class Login extends AppCompatActivity {
-
-
 
 
     private Button LoginButton;
@@ -36,8 +37,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ServerConnection SC = new ServerConnection();
-
         LoginButton = findViewById(R.id.LoginBtn);
 
         LoginButton.setOnClickListener(new View.OnClickListener() {
@@ -52,8 +51,17 @@ public class Login extends AppCompatActivity {
 
                 ErrorMessage = findViewById(R.id.ErrorMessage);
 
-                 String token = SC.login(Usuario, Senha);
-                System.out.println(token);
+                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                String token = sharedPreferences.getString("token", "");
+
+                if (!token.isEmpty()) {
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    ErrorMessage.setText("Usuario ou Senha Incorretos");
+                    return;
+                }
+
             }
         });
 
@@ -79,10 +87,24 @@ public class Login extends AppCompatActivity {
             }
         });
 
-
     }
 
+    public void LoginFunction(String Usuario, String Senha) {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                ServerConnection SC = new ServerConnection();
 
+                String token = SC.login(Usuario, Senha);
 
+                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("token", token);
+                editor.apply();
+
+            }
+
+        };
+    }
 
 }

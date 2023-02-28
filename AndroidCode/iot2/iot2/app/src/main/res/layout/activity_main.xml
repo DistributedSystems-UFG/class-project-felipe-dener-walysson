@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <TextView
         android:id="@+id/login_Label"
         android:layout_width="173dp"
@@ -13,6 +14,18 @@
         android:layout_marginStart="180dp"
         android:layout_marginTop="16dp"
         android:text="IOT"
+        android:textColor="#2196F3"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/login_Label2"
+        android:layout_width="281dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="340dp"
+        android:text="Controles WEB"
         android:textColor="#2196F3"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,16 +109,46 @@
 
     <ToggleButton
         android:id="@+id/PresentationBtn"
-        android:layout_width="281dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginBottom="356dp"
+        android:layout_width="361dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="92dp"
         android:backgroundTint="#FF5722"
         android:checked="false"
         android:text="ToggleButton"
         android:textColor="#FFFFFF"
-        android:textOff="APRESENTAÇÂO(WEB)"
+        android:textOff="MODO APRESENTAÇÂO"
         android:textOn="FECHAR APRESENTAÇÂO"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/HomeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="276dp"
+        android:text="Home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/LightSensorBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="216dp"
+        android:text="Sensor de Luz"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/TempSensorBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="152dp"
+        android:text="Sensor de Temperatura"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

@@ -27,6 +27,8 @@ service IoTService {
   // action
   rpc Action (ActionRequest) returns (ActionReply) {}
 
+  rpc LightStatus (LedStatusRequest) returns (LedStatusResponse) {}
+
 }
 
 // The request message containing the user's name.
@@ -85,4 +87,13 @@ message ActionRequest {
 
 message ActionReply {
   string status = 1;
+}
+
+message LedStatusRequest {
+  string token = 1;
+}
+
+message LedStatusResponse {
+  uint32 status_red = 1;
+  uint32 status_green = 2;
 }
