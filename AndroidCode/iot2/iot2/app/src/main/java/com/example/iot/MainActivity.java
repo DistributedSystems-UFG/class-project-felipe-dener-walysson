@@ -92,6 +92,34 @@ public class MainActivity extends AppCompatActivity {
 
                     String Temp = SC.getTemperature(token);
                     temperatura.setText(Temp);
+
+/////////////////////////////////////////////////////////////////////////////////
+
+                    int red_led_status = SC.getRedLedStatus();
+                    int green_led_status = SC.getGreenLedStatus();
+
+                    // Led vermelho ligado - Switch Desligado
+                    if( red_led_status == 1 && !RedLedSwtich.isChecked()){
+                        RedLedSwtich.setSelected(true);
+                    }
+
+                    // Led vermelho desligado - Switch ligado
+                    if( red_led_status == 0 && RedLedSwtich.isChecked()){
+                        RedLedSwtich.setSelected(false);
+                    }
+
+                    // Led verde ligado - Switch Desligado
+                    if( green_led_status == 1 && !GreenLedSwtich.isChecked()){
+                        GreenLedSwtich.setSelected(true);
+                    }
+
+                    // Led verde desligado - Switch ligado
+                    if( green_led_status == 0 && GreenLedSwtich.isChecked()){
+                        GreenLedSwtich.setSelected(false);
+                    }
+
+/////////////////////////////////////////////////////////////////////////////////////
+
                     try {
                         TimeUnit.SECONDS.sleep(1);
                     } catch (InterruptedException e) {
