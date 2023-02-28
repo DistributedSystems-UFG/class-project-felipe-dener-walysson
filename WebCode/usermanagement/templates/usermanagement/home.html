@@ -126,7 +126,7 @@
 
 
   async function getStatus(){
-    const response = await axios.get('http://localhost:8000/light_status', {
+    const response = await axios.get('http://localhost:8000/led_status', {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -138,19 +138,19 @@
 
   function runGetStatus(){
     getStatus().then(function(data){
-      if (data.status_green == 1) {
-      $(this).removeClass('btn-glow-green');
+      if (data.green == 0) {
+        $('#greenButton').removeClass('btn-glow-green');
       greenButtonGlowing = false;
     } else {
-      $(this).addClass('btn-glow-green');
+      $('#greenButton').addClass('btn-glow-green');
       greenButtonGlowing = true;
     }
-
-    if (data.status_red == 1) {
-      $(this).removeClass('btn-glow-red');
+  
+    if (data.red == 0) {
+      $('#redButton').removeClass('btn-glow-red');
       redButtonGlowing = false;
     } else {
-      $(this).addClass('btn-glow-red');
+      $('#redButton').addClass('btn-glow-red');
       redButtonGlowing = true;
     }
   });

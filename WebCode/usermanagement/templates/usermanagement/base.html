@@ -48,6 +48,7 @@
 <script>
 
   async function getAction(){
+    console.log("token", localStorage.getItem('token'))
     const response = await axios.get('http://localhost:8000/action', {
       headers: {
         'Content-Type': 'application/json',
