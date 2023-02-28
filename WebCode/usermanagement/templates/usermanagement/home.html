@@ -1,0 +1,167 @@
+{% include 'usermanagement/base.html' %}
+
+{% block content %}
+
+<head>
+  <style>
+   .btn-glow-green {
+  background-color: green;
+  box-shadow: 0 0 10px green;
+}
+
+.btn-glow-red {
+  background-color: red;
+  box-shadow: 0 0 10px red;
+}
+
+
+  </style>
+</head>
+<div class="container mt-3">
+  <h1 class="mb-4">Home Page</h1>
+  <div class="row" style="margin-bottom: 20px;">
+    <div class="col-sm-6">
+      <a href="{% url 'temperatureView' %}" class="btn btn-primary me-md-2" role="button">Temperature Sensor</a>
+    </div>
+    <div class="col-sm-6">
+      <a href="{% url 'lightSensorView' %}" class="btn btn-primary" role="button">Light Sensor</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <button id="greenButton" class="btn btn-success btn-lg btn-block mb-3">Green Light</button>
+    </div>
+    <div class="col-sm-6">
+      <button id="redButton" class="btn btn-danger btn-lg btn-block mb-3">Red Light</button>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // Keep track of whether the buttons are currently glowing or not
+  let greenButtonGlowing = false;
+  let redButtonGlowing = false;
+
+  // Toggle the glow state of the green button
+  $('#greenButton').click(function() {
+    if (greenButtonGlowing) {
+      $(this).removeClass('btn-glow-green');
+      greenButtonGlowing = false;
+      led('green', 0).then(function(status){
+        console.log(status);
+      });
+    } else {
+      $(this).addClass('btn-glow-green');
+      greenButtonGlowing = true;
+      led('green', 1).then(function(status){
+        console.log(status);
+      });
+    }
+  });
+
+  // Toggle the glow state of the red button
+  $('#redButton').click(function() {
+    if (redButtonGlowing) {
+      $(this).removeClass('btn-glow-red');
+      redButtonGlowing = false;
+      led('red', 0).then(function(status){
+        console.log(status);
+      });
+    } else {
+      $(this).addClass('btn-glow-red');
+      redButtonGlowing = true;
+      led('red', 1).then(function(status){
+        console.log(status);
+      });
+    }
+  });
+
+
+  async function getLightLevel(){
+    const response = await axios.get('http://localhost:8000/lightSensor', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      },
+    });
+    return response.data.light_sensor;
+  }
+
+  async function led(name, state){
+    const response = await axios.get('http://localhost:8000/led', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem('token'),
+      },
+      params: {
+        ledname: name,
+        state: state
+      }
+    });
+    return response.data.status;
+  }
+
+  function setLightTheme(){
+    getLightLevel().then(function(lightLevel){
+        if(lightLevel < 80){
+            document.body.classList.remove("dark-mode");
+            document.body.classList.add("light-mode");
+        }
+        else if(lightLevel > 80){
+            document.body.classList.add("dark-mode");
+            document.body.classList.remove("light-mode");
+        }
+    });
+  }
+
+  function setTheme(){
+    if (localStorage.getItem('token') == null){
+        return;
+    }
+    setLightTheme();
+  }
+  setInterval(setTheme, 5000);
+
+
+  async function getStatus(){
+    const response = await axios.get('http://localhost:8000/light_status', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      },
+    });
+    return response.data;
+  }
+
+  function runGetStatus(){
+    getStatus().then(function(data){
+      if (data.status_green == 1) {
+      $(this).removeClass('btn-glow-green');
+      greenButtonGlowing = false;
+    } else {
+      $(this).addClass('btn-glow-green');
+      greenButtonGlowing = true;
+    }
+
+    if (data.status_red == 1) {
+      $(this).removeClass('btn-glow-red');
+      redButtonGlowing = false;
+    } else {
+      $(this).addClass('btn-glow-red');
+      redButtonGlowing = true;
+    }
+  });
+  }
+
+    setInterval(runGetStatus, 5000);
+
+
+
+
+
+</script>
+
+{% endblock %}

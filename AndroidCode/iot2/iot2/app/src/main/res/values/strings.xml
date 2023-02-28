@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">iot</string>
+    <string name="temperatura">Temperatura</string>
+    <string name="led">Led</string>
+    <string name="textview">TextView</string>
+    <string name="interruptor">interruptor</string>
+</resources>
