@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.concurrent.TimeUnit;
+
 public class CadastrarUsuario extends AppCompatActivity {
 
     private Button CadastroButton;
@@ -20,23 +22,12 @@ public class CadastrarUsuario extends AppCompatActivity {
         setContentView(R.layout.activity_cadastrar_usuario);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ServerConnection SC = new ServerConnection();
-
         CadastroButton = findViewById(R.id.CadastroBtn);
 
         CadastroButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
-                /*
-                Conectando ao Server
-                */
-
-                if(!SC.getIPAdress().equals("123")){
-                    ErrorMessage.setText("Falha na Conexão com o Servidor");
-                    return;
-                }
 
                 TextUsuario = findViewById(R.id.editTextUsuario);
                 String Usuario = TextUsuario.getText().toString();
@@ -46,24 +37,24 @@ public class CadastrarUsuario extends AppCompatActivity {
 
                 ErrorMessage = findViewById(R.id.ErrorMessage);
 
-                /*
-                Buscando Usuario no banco de dados
-                */
-                Boolean UserExist = false;
+                CadastrarFunction(Usuario, Senha);
 
-                if( Usuario.equals("abc")){
-                    UserExist = true;
-                }
+                ErrorMessage.setText("Usuário Cadastrado Com Sucesso");
 
-                if (UserExist){
-                    ErrorMessage.setText("Nome de Usuario já existente");
-                    return;
-                }
-                else{
-                    ErrorMessage.setText("Usuario cadastrado com sucesso");
-                }
             }
         });
 
+    }
+
+    public void CadastrarFunction(String Usuario, String Senha) {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                ServerConnection SC = new ServerConnection();
+
+                SC.registerUser(Usuario, Senha);
+            }
+
+        };
     }
 }

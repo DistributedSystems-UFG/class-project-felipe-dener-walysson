@@ -3,6 +3,8 @@ package com.example.iot;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +18,14 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private TextView temperatura;
-    private ToggleButton RedLed;
-    private ToggleButton GreenLed;
+    private ToggleButton RedLedSwtich;
+    private ToggleButton GreenLedSwtich;
     private ToggleButton PresentationButton;
+    private Button HomeBtn;
+    private Button LightBtn;
+    private Button TempBtn;
     private TextView LedState;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -28,83 +34,64 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RedLed = findViewById(R.id.RedLedToggle);
-        GreenLed = findViewById(R.id.GreenLedToggle);
+        RedLedSwtich = findViewById(R.id.RedLedToggle);
+        GreenLedSwtich = findViewById(R.id.GreenLedToggle);
         temperatura = findViewById(R.id.EditTextTemperatura);
-        PresentationButton = findViewById(R.id.PresentationBtn);
-        LedState = findViewById(R.id.LedStateText);
 
+
+
+        PresentationButton = findViewById(R.id.PresentationBtn);
+        HomeBtn = findViewById(R.id.HomeBtn);
+        LightBtn = findViewById(R.id.LightSensorBtn);
+        TempBtn = findViewById(R.id.TempSensorBtn);
+
+        LedState = findViewById(R.id.LedStateText);
 
         ServerConnection SC = new ServerConnection();
 
-        RedLed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", "");
+
+        /*
+        Upper part of the screen(IoT)
+        */
+
+        RedLedSwtich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isON) {
                 if(isON){
-                    /*
-                    Set Red LED to on
-                    */
+                    SC.blinkLed("red", 0, token);
                     LedState.setText("Red Led is on");
                 }
                 else{
-                    /*
-                    Set Red LED to off
-                    */
+                    SC.blinkLed("red", 1, token);
                     LedState.setText("Red Led is off");
                 }
             }
         });
 
-        GreenLed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        GreenLedSwtich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isON) {
                 if(isON){
-                    /*
-                    Set Green LED to on
-                    */
+                    SC.blinkLed("green", 0, token);
                     LedState.setText("Green Led is on");
                 }
                 else{
-                    /*
-                    Set Green LED to off
-                    */
+                    SC.blinkLed("green", 1, token);
                     LedState.setText("Green Led is off");
                 }
             }
         });
 
-        PresentationButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isON) {
-                if(isON){
-                    /*
-                    Start Presentation
-                    */
-                    LedState.setText("Start Presentation");
-                }
-                else{
-                    /*
-                    Close Presentation
-                    */
-                    LedState.setText("Close Presentation");
-                }
-            }
-        });
 
         Thread thread = new Thread() {
             @Override
             public void run() {
-
-                /*
-                Loop get Temperatura
-                */
-
-                String[] temperaturas = {"26.5", "27.0", "27.5", "28.0",};
-                Random random = new Random();
                 while (true) {
 
-                    int num = random.nextInt(temperaturas.length);
-                    temperatura.setText(temperaturas[num]);
+                    String Temp = SC.getTemperature(token);
+                    temperatura.setText(Temp);
                     try {
                         TimeUnit.SECONDS.sleep(1);
                     } catch (InterruptedException e) {
@@ -115,6 +102,46 @@ public class MainActivity extends AppCompatActivity {
         };
 
         thread.start();
+
+
+        /*
+        Lower part of the screen(Controles Web)
+        */
+
+        HomeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SC.executeAction("go_to_home", token);
+            }
+        });
+
+        LightBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SC.executeAction("go_to_lightsensor", token);
+            }
+        });
+
+        TempBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SC.executeAction("go_to_temperature", token);
+            }
+        });
+
+        PresentationButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isON) {
+                if(isON){
+                    SC.executeAction("full_screen", token);
+                    LedState.setText("Start Presentation");
+                }
+                else{
+                    SC.executeAction("exit_full_screen", token);
+                    LedState.setText("Close Presentation");
+                }
+            }
+        });
 
     }
 }
