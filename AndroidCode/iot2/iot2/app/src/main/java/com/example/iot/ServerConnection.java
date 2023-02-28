@@ -128,4 +128,33 @@ public class ServerConnection {
         channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
     }
 
+
+////////////////////////////////////////////////////////////////////////
+
+    // getRedLedStatus
+    public int getRedLedStatus(){
+        LedStatusRequest request = LedStatusRequest.newBuilder()
+                .setToken("my_token")
+                .build();
+
+        LedStatusResponse response = mStub.lightStatus(request);
+
+        int redStatus = response.getStatusRed();
+        return redStatus;
+    }
+
+    // getGreenLedStatus
+    public int getGreenLedStatus(){
+        LedStatusRequest request = LedStatusRequest.newBuilder()
+                .setToken("my_token")
+                .build();
+
+        LedStatusResponse response = mStub.lightStatus(request);
+
+        int greenStatus = response.getStatusRed();
+        return greenStatus;
+    }
+
+////////////////////////////////////////////////////////////////////////////
+
 }
