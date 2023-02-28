@@ -9,6 +9,8 @@ import io.grpc.StatusRuntimeException;
 import io.grpc.examples.iotservice.ActionRequest;
 import io.grpc.examples.iotservice.IoTServiceGrpc;
 import io.grpc.examples.iotservice.LedRequest;
+import io.grpc.examples.iotservice.LedStatusRequest;
+import io.grpc.examples.iotservice.LedStatusResponse;
 import io.grpc.examples.iotservice.LightLevelReply;
 import io.grpc.examples.iotservice.LightLevelRequest;
 import io.grpc.examples.iotservice.TemperatureReply;
@@ -19,7 +21,7 @@ import io.grpc.examples.iotservice.UserResponse;
 
 public class ServerConnection {
 
-    public static String IPAdress = "34.123.130.49";
+    public static String IPAdress = "34.86.129.130";
     public static final String Port = "50051";
 
     private final ManagedChannel channel;
@@ -137,7 +139,7 @@ public class ServerConnection {
                 .setToken("my_token")
                 .build();
 
-        LedStatusResponse response = mStub.lightStatus(request);
+        LedStatusResponse response = blockingStub.lightStatus(request);
 
         int redStatus = response.getStatusRed();
         return redStatus;
@@ -149,7 +151,7 @@ public class ServerConnection {
                 .setToken("my_token")
                 .build();
 
-        LedStatusResponse response = mStub.lightStatus(request);
+        LedStatusResponse response = blockingStub.lightStatus(request);
 
         int greenStatus = response.getStatusRed();
         return greenStatus;
