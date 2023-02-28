@@ -59,13 +59,13 @@ public class MainActivity extends AppCompatActivity {
         RedLedSwtich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isON) {
-                if(isON){
+                if(!isON){
                     SC.blinkLed("red", 0, token);
-                    LedState.setText("Red Led is on");
+                    LedState.setText("Red Led is off");
                 }
                 else{
                     SC.blinkLed("red", 1, token);
-                    LedState.setText("Red Led is off");
+                    LedState.setText("Red Led is on");
                 }
             }
         });
@@ -73,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
         GreenLedSwtich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isON) {
-                if(isON){
+                if(!isON){
                     SC.blinkLed("green", 0, token);
-                    LedState.setText("Green Led is on");
+                    LedState.setText("Green Led is off");
                 }
                 else{
                     SC.blinkLed("green", 1, token);
-                    LedState.setText("Green Led is off");
+                    LedState.setText("Green Led is on");
                 }
             }
         });
@@ -95,28 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
 /////////////////////////////////////////////////////////////////////////////////
 
-                    int red_led_status = SC.getRedLedStatus();
-                    int green_led_status = SC.getGreenLedStatus();
-
-                    // Led vermelho ligado - Switch Desligado
-                    if( red_led_status == 1 && !RedLedSwtich.isChecked()){
-                        RedLedSwtich.setSelected(true);
-                    }
-
-                    // Led vermelho desligado - Switch ligado
-                    if( red_led_status == 0 && RedLedSwtich.isChecked()){
-                        RedLedSwtich.setSelected(false);
-                    }
-
-                    // Led verde ligado - Switch Desligado
-                    if( green_led_status == 1 && !GreenLedSwtich.isChecked()){
-                        GreenLedSwtich.setSelected(true);
-                    }
-
-                    // Led verde desligado - Switch ligado
-                    if( green_led_status == 0 && GreenLedSwtich.isChecked()){
-                        GreenLedSwtich.setSelected(false);
-                    }
 
 /////////////////////////////////////////////////////////////////////////////////////
 
