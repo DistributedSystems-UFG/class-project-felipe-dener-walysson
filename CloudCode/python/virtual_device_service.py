@@ -58,6 +58,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
 
     def SayTemperature(self, request, context):
         if self.is_authenticated(request.token):
+            current_temperature = str(random.randint(0, 50)) #comentar depois
             create_db.insert_user_device_value(1, 1, current_temperature)
             return iot_service_pb2.TemperatureReply(temperature=current_temperature)
         return iot_service_pb2.TemperatureReply(temperature="")
@@ -66,7 +67,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
         if self.is_authenticated(request.token):
             print ("Blink led ", request.ledname)
             print ("...with state ", request.state)
-            produce_led_command(request.state, request.ledname)
+            # produce_led_command(request.state, request.ledname) desocmentar depois
             led_id = 3 if request.ledname == 'red' else 4
             create_db.insert_user_device_value(1, led_id, request.state)
             # Update led state of twin
@@ -76,13 +77,14 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
 
     def SayLightLevel(self, request, context):
         if self.is_authenticated(request.token):
-            # current_light_level = str(random.randint(0, 150))
+            current_light_level = str(random.randint(0, 150)) #comentar depois
 
             create_db.insert_user_device_value(1,2, current_light_level)
             return iot_service_pb2.LightLevelReply(lightLevel=current_light_level)
         return iot_service_pb2.LightLevelReply(lightLevel="")
 
     def Login(self, request, context):
+        print(request.name)
         if create_db.verify_login(request.name, request.password):
             return iot_service_pb2.UserResponse(status=True, token=generate_token(request.name))
         else:
@@ -105,6 +107,7 @@ class IoTServer(iot_service_pb2_grpc.IoTServiceServicer):
             elif request.action == 'there_is_action?':
                 return iot_service_pb2.ActionReply(status='')
             else:
+                print(request.action)
                 action[self.get_name(request.token)] = request.action
                 return iot_service_pb2.ActionReply(status='')
     
@@ -132,13 +135,13 @@ def serve():
 if __name__ == '__main__':
     logging.basicConfig()
     create_db.run()
-    trd1 = threading.Thread(target=consume_temperature)
-    trd1.start()
+    # trd1 = threading.Thread(target=consume_temperature)
+    # trd1.start()
 
-    trd2 = threading.Thread(target=consume_light_level)
-    trd2.start()
+    # trd2 = threading.Thread(target=consume_light_level)
+    # trd2.start()
 
-    # Initialize the state of the leds on the actual device
-    for color in led_state.keys():
-        produce_led_command (led_state[color], color)
+    # # Initialize the state of the leds on the actual device
+    # for color in led_state.keys():
+    #     produce_led_command (led_state[color], color)
     serve()
