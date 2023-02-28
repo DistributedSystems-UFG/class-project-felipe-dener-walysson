@@ -11,7 +11,7 @@ package iot_service;
 service IoTService {
   // Responds with a temperature measurement
   rpc SayTemperature (TemperatureRequest) returns (TemperatureReply) {}
-  
+
   // Send a command to the led
   rpc BlinkLed (LedRequest) returns (LedReply) {}
 
@@ -94,6 +94,6 @@ message LedStatusRequest {
 }
 
 message LedStatusResponse {
-  int status_red = 1;
-  int status_green = 2;
+  uint32 status_red = 1;
+  uint32 status_green = 2;
 }
